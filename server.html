@@ -14,7 +14,12 @@
 
     <script>
         fetch('https://your-glitch-project.glitch.me/get-urls')  // GlitchプロジェクトのURLに変更してください
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(urls => {
             const container = document.getElementById('urls-container');
             urls.forEach(url => {
