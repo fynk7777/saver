@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学Tube</title>
+    <style>
+        /* CSS styles */
+    </style>
+</head>
+<body>
+<input type="text" id="videoUrl" placeholder="動画のリンクを入力してください">
+<div>
+    <button onclick="embedVideo()">動画を表示</button>
+    <button onclick="pasteFromClipboard()">クリップボードから貼り付け</button>
+</div>
+<div id="developerModeLabel">開発者モード</div>
+<div id="videoContainer" class="aspect-ratio-16-9">
+    <iframe id="videoIframe" src="" frameborder="0" allowfullscreen></iframe>
+</div>
+<script>
+    // Check if developer mode is enabled from local storage
+    let isDeveloperMode = localStorage.getItem('developerMode') === 'true';
+
+    function embedVideo() {
+        const url = document.getElementById('videoUrl').value;
+        const iframe = document.getElementById('videoIframe');
+        const videoContainer = document.getElementById('videoContainer');
+
+        if (url.toLowerCase() === '.history') {
+            // Redirect to server (in developer mode)
+            if (isDeveloperMode) {
+                window.location.href = 'server.html'; // Replace 'server.html' with your server page
+            }
+            return;
+        }
+
+        // Embed video based on URL (YouTube, TikTok, NicoNico)
+        // Implementation of getYouTubeVideoId(), getTikTokVideoId(), getNicoNicoVideoId()...
+
+        // Example embed code for YouTube
+        // iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+        // Save URL to local storage
+        localStorage.setItem('savedUrl', url);
+    }
+
+    function pasteFromClipboard() {
+        // Implementation...
+    }
+
+    function toggleDeveloperMode() {
+        isDeveloperMode = !isDeveloperMode;
+        localStorage.setItem('developerMode', isDeveloperMode);
+        document.getElementById('developerModeLabel').style.display = isDeveloperMode ? 'block' : 'none';
+    }
+
+    // Check if developer mode is enabled
+    if (isDeveloperMode) {
+        document.getElementById('developerModeLabel').style.display = 'block';
+    }
+</script>
+</body>
+</html>
