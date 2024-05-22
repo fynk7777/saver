@@ -69,7 +69,7 @@
     <iframe id="videoIframe" src="" frameborder="0" allowfullscreen></iframe>
 </div>
 <script>
-    let isDeveloperMode = false;
+    let isDeveloperMode = localStorage.getItem('developerMode') === 'true';
 
     function getYouTubeVideoId(url) {
         const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/;
@@ -111,6 +111,13 @@
 
         if (url.toLowerCase() === 'developer mode') {
             toggleDeveloperMode();
+            return;
+        }
+
+        if (url.toLowerCase() === '.history') {
+            if (isDeveloperMode) {
+                window.location.href = 'server.html'; // Replace 'server.html' with your server page URL
+            }
             return;
         }
 
