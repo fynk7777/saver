@@ -101,10 +101,11 @@
 
     function toggleDeveloperMode() {
         isDeveloperMode = !isDeveloperMode;
+        localStorage.setItem('developerMode', isDeveloperMode);
         document.body.classList.toggle('developer-mode', isDeveloperMode);
     }
 
-    function embedVideo() {
+    async function embedVideo() {
         const url = document.getElementById('videoUrl').value;
         const iframe = document.getElementById('videoIframe');
         const videoContainer = document.getElementById('videoContainer');
@@ -125,6 +126,7 @@
         if (videoId) {
             videoContainer.className = 'aspect-ratio-16-9';
             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            await saveUrl(url);
             return;
         }
 
@@ -136,6 +138,7 @@
             }
             videoContainer.className = 'aspect-ratio-9-16';
             iframe.src = `https://www.tiktok.com/embed/v2/${videoId}`;
+            await saveUrl(url);
             return;
         }
 
@@ -147,11 +150,27 @@
             }
             videoContainer.className = 'aspect-ratio-16-9';
             iframe.src = `https://embed.nicovideo.jp/watch/${videoId}`;
+            await saveUrl(url);
             return;
         }
 
         alert(isDeveloperMode ? '有効なYouTube、TikTok、またはニコニコ動画のリンクを入力してください。' : '有効なYouTubeのリンクを入力してください。');
     }
+
+    async function saveUrl(url) {
+        try {
+            await fetch('https://gakutube.glitch.me/save-url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            });
+        } catch (error) {
+            console.error('Error saving URL:', error);
+        }
+    }
 </script>
 </body>
 </html>
+
